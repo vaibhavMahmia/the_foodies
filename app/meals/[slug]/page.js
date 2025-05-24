@@ -1,8 +1,11 @@
 import Image from 'next/image';
 import classes from './page.module.css';
 import { getMeal } from '@/lib/meals';
-const MealDetailPage = ({ params }) => {
-  const meal = getMeal(params.slug);
+import { notFound } from 'next/navigation';
+const MealDetailPage = async ({ params }) => {
+  const resolvedParams = await params;
+  const meal = await getMeal(resolvedParams.slug);
+  if (!meal) notFound();
   meal.instructions = meal.instructions.replace(/\n/g, '<br>');
   return (
     <>
